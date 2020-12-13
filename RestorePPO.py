@@ -36,18 +36,17 @@ class PPO(object):
 
         for o in range(1):
             for m in range(3):
-                # 获取第m步的状态，动作，奖励
                 s_t_cur = state[m]
                 action_cur = action[m]
                 reward_cur = reward[m]
                 policy_old = old_action_log_prob[m]
                 done_cur = done[m]
-                num = len(reward_cur) # 奖励的个数。
+                num = len(reward_cur)
                 if num < 1:
                     continue
                 rnn_length = m + 1
                 rnn_batch = num // rnn_length
-                # derive action at previous step 派生上一步的操作
+              
                 action_in = np.zeros([num, 12])
                 for k in range(rnn_batch):
                     for p in range(rnn_length):
