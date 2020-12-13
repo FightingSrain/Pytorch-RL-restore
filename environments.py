@@ -14,7 +14,7 @@ class Env(object):
         self.reward_func = 'step_psnr_reward'
         self.is_train = True
         self.learn_start = 1000
-        self.count = 0 # 恢复步数
+        self.count = 0 
         self.psnr = 0.
         self.psnr_pre = 0.
         self.psnr_init = 0.
@@ -30,8 +30,7 @@ class Env(object):
 
             self.train_cur = 0
             self.train_max = len(self.train_list)
-
-            # 训练集
+            
             train_file = h5.File(self.train_list[self.train_cur], "r")
             self.data = train_file["data"].value # (2752, 63, 63, 3)
             self.label = train_file["label"].value # (2752, 63, 63, 3)
@@ -40,7 +39,7 @@ class Env(object):
             self.data_index = 0
             self.data_len = len(self.data)
 
-            # 验证集
+         
             vali_file = h5.File(self.vali_dir + os.listdir(self.vali_dir)[0], "r")
             self.data_test = vali_file["data"].value
             self.label_test = vali_file["label"].value
@@ -120,18 +119,15 @@ class Env(object):
         self.terminal = False
 
         while self.data_index < self.data_len:
-            # 从数据集中取出一张图片
             self.img = self.data[self.data_index: self.data_index+1, ...]
             self.img_gt = self.label[self.data_index: self.data_index+1, ...]
             self.psnr = Cal_psnr(self.img, self.img_gt)
 
-            # 太平滑的图片跳过
             if self.psnr > 50:
                 self.data_index += 1
             else:
                 break
 
-        # 更新训练文件(如果有多个训练文件)
         if self.data_index >= self.data_len:
             if self.train_cur > 1:
                 self.train_cur += 1
