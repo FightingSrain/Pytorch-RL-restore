@@ -12,8 +12,8 @@ from tqdm import tqdm
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.manual_seed(1)
 
-clip_param_start = 1.5 # 1.5 # 0.2
-clip_param_now = 1.5
+clip_param_start = 0.3
+clip_param_now = 0.25
 num_epi = 1000000
 clip_linear_jud = False
 max_grad_norm = 0.5
