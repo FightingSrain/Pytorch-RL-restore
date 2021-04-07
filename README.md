@@ -10,7 +10,7 @@
 - pytorch 0.4.1
 - python 3.5
 - tensorflow 1.5.0
-Higher versions of tensorflow may not work!
+- Higher versions of tensorflow may not work!
 
 # Citation
 
