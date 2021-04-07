@@ -7,10 +7,10 @@
 `I tried to use PPO instead of DQN, and got a similar result.`
 
 # Requirements and Dependencies
-- pytorch 0.4.1+
-- python 3.5+
-
-`Update not completed`
+- pytorch 0.4.1
+- python 3.5
+- tensorflow 1.5.0
+Higher versions of tensorflow may not work!
 
 # Citation
 
