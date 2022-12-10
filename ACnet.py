@@ -41,6 +41,7 @@ class ACnet(nn.Module):
         self.flat_lstm_a.apply(self.weight_init)
         self.flat_lstm_a_.apply(self.weight_init)
         self.lstm.apply(self.weight_init)
+
     def forward(self, x, pre_action, batch_size=1, length=1, ht=None, ct=None,test=False,off=False):
         conv_out = self.conv(x)
         conv_out = conv_out.view(batch_size, -1)
@@ -63,23 +64,27 @@ class ACnet(nn.Module):
         output = output.view(-1, 50)
         #################################
         outputa = self.flat_lstm_a0(output)
-        outputa = F.leaky_relu(outputa)
         outputa = F.layer_norm(outputa, (output.size(0), 50))
+        outputa = F.leaky_relu(outputa)
+        
 
 
         outputa = self.flat_lstm_a(outputa)
-        outputa = F.leaky_relu(outputa)
         outputa = F.layer_norm(outputa,(outputa.size(0),32))
+        outputa = F.leaky_relu(outputa)
+        
         outputa = self.flat_lstm_a_(outputa)
         policy = F.softmax(outputa, dim=1)
         ###########
         value = self.flat_critic01(output)
-        value = F.leaky_relu(value)
         value = F.layer_norm(value, (output.size(0), 50))
+        value = F.leaky_relu(value)
+        
 
         value = self.flat_critic0(value)
-        value = F.leaky_relu(value)
         value = F.layer_norm(value, (output.size(0), 32))
+        value = F.leaky_relu(value)
+        
         value = self.flat_critic1(value)
         return policy, value, hn, cn
 
@@ -97,6 +102,7 @@ class ACnet(nn.Module):
             else:
                 one_hots[i, pre_action[i].item()] = 1
         return one_hots
+
     def weight_init(self, m):
         classname = m.__class__.__name__
         if classname.find("Conv2d") != -1:
